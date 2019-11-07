@@ -3,11 +3,13 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 320px;
+  width: 700px;
+  /* border: 1px dotted white; */
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: black;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,4 +21,32 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.App-white-note {
+  fill: white;
+  stroke: gray;
+  stroke-width: 1;
+  cursor: pointer;
+}
+
+.App-white-note-gray {
+  fill: gray;
+  stroke: gray;
+  stroke-width: 1;
+}
+
+.App-black-note {
+  fill: black;
+  stroke-width: 1;
+  cursor: pointer;
+}
+
+.App-black-note-gray {
+  fill: #333;
+  stroke-width: 1;
+}
+
+.App-note-name {
+  font-family: 'Folktale';
 }
