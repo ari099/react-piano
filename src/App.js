@@ -1,4 +1,5 @@
 import React from 'react';
+import Tone from 'tone';
 import './App.css';
 
 class BlackNote extends React.Component {
@@ -8,6 +9,7 @@ class BlackNote extends React.Component {
       pressed: false
     };
 
+    this.synth = new Tone.AMSynth().toMaster();
     this.playNote = this.playNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
   }
@@ -15,10 +17,12 @@ class BlackNote extends React.Component {
   playNote(e) {
     this.setState({pressed: true});
     this.props.noteName(e.target.id.replace('Sharp','#').replace('Flat','b'));
+    this.synth.triggerAttack(e.target.id[0] + e.target.id.replace('Sharp','#')[1] + '4');
   }
 
   stopNote(e) {
     this.setState({pressed: false});
+    this.synth.triggerRelease();
   }
 
   render() {
@@ -62,6 +66,7 @@ class Note extends React.Component {
       pressed: false
     };
 
+    this.synth = new Tone.AMSynth().toMaster();
     this.playNote = this.playNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
   }
@@ -69,10 +74,12 @@ class Note extends React.Component {
   playNote(e) {
     this.setState({pressed: true});
     this.props.noteName(e.target.id.replace('Sharp','#').replace('Flat','b'));
+    this.synth.triggerAttack(e.target.id.replace('Sharp','#').replace('Flat','') + '4');
   }
 
   stopNote(e) {
     this.setState({pressed: false});
+    this.synth.triggerRelease();
   }
 
   render() {
