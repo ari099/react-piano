@@ -2,6 +2,9 @@ import React from 'react';
 import Tone from 'tone';
 import './App.css';
 
+/**
+ * Component for black notes on the piano
+ */
 class BlackNote extends React.Component {
   constructor(props) {
     super(props);
@@ -9,23 +12,34 @@ class BlackNote extends React.Component {
       pressed: false
     };
 
+    // Tone Synth = basic synthesizer
     this.synth = new Tone.AMSynth().toMaster();
+
     this.playNote = this.playNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
   }
 
+  /**
+   * Play a note
+   * @param e 
+   */
   playNote(e) {
     this.setState({pressed: true});
     this.props.noteName(e.target.id.replace('Sharp','#').replace('Flat','b'));
     this.synth.triggerAttack(e.target.id[0] + e.target.id.replace('Sharp','#')[1] + '4');
   }
 
+  /**
+   * Stop playing a note
+   * @param e 
+   */
   stopNote(e) {
     this.setState({pressed: false});
     this.synth.triggerRelease();
   }
 
   render() {
+    // Up position of the piano key
     let up = this.props.x + "," + this.props.y + " " +
       this.props.x + "," + (this.props.y+150) + " " +
       (this.props.x+10) + "," + (this.props.y+160) + " " +
@@ -33,6 +47,7 @@ class BlackNote extends React.Component {
       (this.props.x+80) + "," + (this.props.y+150) + " " +
       (this.props.x+80) + "," + this.props.y;
     
+    // Down position of the piano key
     let down = this.props.x + "," + this.props.y + " " +
       this.props.x + "," + (this.props.y+160) + " " +
       (this.props.x+10) + "," + (this.props.y+170) + " " +
@@ -40,6 +55,8 @@ class BlackNote extends React.Component {
       (this.props.x+80) + "," + (this.props.y+160) + " " +
       (this.props.x+80) + "," + this.props.y;
 
+    // If the key is pressed, setting the key to the 'down' position
+    // Otherwise, setting the key to the 'up' position
     let played;
     if(this.state.pressed) played = down;
     else played = up;
@@ -59,6 +76,9 @@ class BlackNote extends React.Component {
   }
 }
 
+/**
+ * Component for white notes on the piano
+ */
 class Note extends React.Component {
   constructor(props) {
     super(props);
@@ -66,23 +86,34 @@ class Note extends React.Component {
       pressed: false
     };
 
+    // Tone Synth = basic synthesizer
     this.synth = new Tone.AMSynth().toMaster();
+
     this.playNote = this.playNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
   }
 
+  /**
+   * Play a note
+   * @param e 
+   */
   playNote(e) {
     this.setState({pressed: true});
     this.props.noteName(e.target.id.replace('Sharp','#').replace('Flat','b'));
     this.synth.triggerAttack(e.target.id.replace('Sharp','#').replace('Flat','') + '4');
   }
 
+  /**
+   * Stop playing a note
+   * @param e 
+   */
   stopNote(e) {
     this.setState({pressed: false});
     this.synth.triggerRelease();
   }
 
   render() {
+    // Up position of the piano key
     let up = this.props.x + "," + this.props.y + " " +
       this.props.x + "," + (this.props.y+300) + " " +
       (this.props.x+10) + "," + (this.props.y+310) + " " +
@@ -90,6 +121,7 @@ class Note extends React.Component {
       (this.props.x+100) + "," + (this.props.y+300) + " " +
       (this.props.x+100) + "," + this.props.y;
     
+    // Down position of the piano key
     let down = this.props.x + "," + this.props.y + " " +
       this.props.x + "," + (this.props.y+310) + " " +
       (this.props.x+10) + "," + (this.props.y+320) + " " +
@@ -97,6 +129,8 @@ class Note extends React.Component {
       (this.props.x+100) + "," + (this.props.y+310) + " " +
       (this.props.x+100) + "," + this.props.y;
 
+    // If the key is pressed, setting the key to the 'down' position
+    // Otherwise, setting the key to the 'up' position
     let played;
     if(this.state.pressed) played = down;
     else played = up;
