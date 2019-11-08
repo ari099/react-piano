@@ -13,7 +13,9 @@ class BlackNote extends React.Component {
     };
 
     // Tone Synth = basic synthesizer
-    this.synth = new Tone.AMSynth().toMaster();
+    this.synth = new Tone.Synth();
+    this.synth.oscillator.type = "sine";
+    this.synth.toMaster();
 
     this.playNote = this.playNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
@@ -87,7 +89,9 @@ class Note extends React.Component {
     };
 
     // Tone Synth = basic synthesizer
-    this.synth = new Tone.AMSynth().toMaster();
+    this.synth = new Tone.Synth();
+    this.synth.oscillator.type = "sine";
+    this.synth.toMaster();
 
     this.playNote = this.playNote.bind(this);
     this.stopNote = this.stopNote.bind(this);
