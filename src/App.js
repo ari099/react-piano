@@ -1,201 +1,165 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Tone from 'tone';
 import './App.css';
 
 /**
- * Component for black notes on the piano
+ * Functional Note component
+ * Properties:
+ *  => color (Boolean, black or white)
+ *  => playing (Boolean, yes or no)
+ *  => note (String)
+ *  => x (Integer)
+ *  => y (Integer)
+ * @param props 
  */
-class BlackNote extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pressed: false
-    };
+const Note = props => {
 
-    // Tone Synth = basic synthesizer
-    this.synth = new Tone.Synth();
-    this.synth.oscillator.type = "square";
-    this.synth.toMaster();
-
-    this.playNote = this.playNote.bind(this);
-    this.stopNote = this.stopNote.bind(this);
+  const currentNote = () => {
+    props.setNote(props.note);
   }
 
-  /**
-   * Play a note
-   * @param e 
-   */
-  playNote(e) {
-    this.setState({pressed: true});
-    this.props.noteName(e.target.id.replace('Sharp','#').replace('Flat','b'));
-    this.synth.triggerAttack(e.target.id[0] + e.target.id.replace('Sharp','#')[1] + '4');
-  }
+  // Up position of the piano key
+  let up = (props.color) ? props.x + "," + props.y + " " +
+    props.x + "," + (props.y+300) + " " +
+    (props.x+10) + "," + (props.y+310) + " " +
+    (props.x+90) + "," + (props.y+310) + " " +
+    (props.x+100) + "," + (props.y+300) + " " +
+    (props.x+100) + "," + props.y : props.x + "," + props.y + " " +
+    props.x + "," + (props.y+150) + " " +
+    (props.x+10) + "," + (props.y+160) + " " +
+    (props.x+70) + "," + (props.y+160) + " " +
+    (props.x+80) + "," + (props.y+150) + " " +
+    (props.x+80) + "," + props.y;
+  
+  // Down position of the piano key
+  let down = (props.color) ? props.x + "," + props.y + " " +
+    props.x + "," + (props.y+310) + " " +
+    (props.x+10) + "," + (props.y+320) + " " +
+    (props.x+90) + "," + (props.y+320) + " " +
+    (props.x+100) + "," + (props.y+310) + " " +
+    (props.x+100) + "," + props.y : props.x + "," + props.y + " " +
+    props.x + "," + (props.y+160) + " " +
+    (props.x+10) + "," + (props.y+170) + " " +
+    (props.x+70) + "," + (props.y+170) + " " +
+    (props.x+80) + "," + (props.y+160) + " " +
+    (props.x+80) + "," + props.y;
 
-  /**
-   * Stop playing a note
-   * @param e 
-   */
-  stopNote(e) {
-    this.setState({pressed: false});
-    this.synth.triggerRelease();
-  }
-
-  render() {
-    // Up position of the piano key
-    let up = this.props.x + "," + this.props.y + " " +
-      this.props.x + "," + (this.props.y+150) + " " +
-      (this.props.x+10) + "," + (this.props.y+160) + " " +
-      (this.props.x+70) + "," + (this.props.y+160) + " " +
-      (this.props.x+80) + "," + (this.props.y+150) + " " +
-      (this.props.x+80) + "," + this.props.y;
-    
-    // Down position of the piano key
-    let down = this.props.x + "," + this.props.y + " " +
-      this.props.x + "," + (this.props.y+160) + " " +
-      (this.props.x+10) + "," + (this.props.y+170) + " " +
-      (this.props.x+70) + "," + (this.props.y+170) + " " +
-      (this.props.x+80) + "," + (this.props.y+160) + " " +
-      (this.props.x+80) + "," + this.props.y;
-
-    // If the key is pressed, setting the key to the 'down' position
-    // Otherwise, setting the key to the 'up' position
-    let played;
-    if(this.state.pressed) played = down;
-    else played = up;
-
-    return (
-      <g id={this.props.id}>
-        <polygon
-          className="App-black-note-gray"
-          points={down} />
-        <polygon id={this.props.id.slice(4, this.props.id.length)}
-          className="App-black-note"
-          onMouseDown={this.playNote}
-          onMouseUp={this.stopNote}
-          points={played} />
-      </g>
-    );
-  }
-}
-
-/**
- * Component for white notes on the piano
- */
-class Note extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pressed: false
-    };
-
-    // Tone Synth = basic synthesizer
-    this.synth = new Tone.Synth();
-    this.synth.oscillator.type = "square";
-    this.synth.toMaster();
-
-    this.playNote = this.playNote.bind(this);
-    this.stopNote = this.stopNote.bind(this);
-  }
-
-  /**
-   * Play a note
-   * @param e 
-   */
-  playNote(e) {
-    this.setState({pressed: true});
-    this.props.noteName(e.target.id.replace('Sharp','#').replace('Flat','b'));
-    this.synth.triggerAttack(e.target.id.replace('Sharp','#').replace('Flat','') + '4');
-  }
-
-  /**
-   * Stop playing a note
-   * @param e 
-   */
-  stopNote(e) {
-    this.setState({pressed: false});
-    this.synth.triggerRelease();
-  }
-
-  render() {
-    // Up position of the piano key
-    let up = this.props.x + "," + this.props.y + " " +
-      this.props.x + "," + (this.props.y+300) + " " +
-      (this.props.x+10) + "," + (this.props.y+310) + " " +
-      (this.props.x+90) + "," + (this.props.y+310) + " " +
-      (this.props.x+100) + "," + (this.props.y+300) + " " +
-      (this.props.x+100) + "," + this.props.y;
-    
-    // Down position of the piano key
-    let down = this.props.x + "," + this.props.y + " " +
-      this.props.x + "," + (this.props.y+310) + " " +
-      (this.props.x+10) + "," + (this.props.y+320) + " " +
-      (this.props.x+90) + "," + (this.props.y+320) + " " +
-      (this.props.x+100) + "," + (this.props.y+310) + " " +
-      (this.props.x+100) + "," + this.props.y;
-
-    // If the key is pressed, setting the key to the 'down' position
-    // Otherwise, setting the key to the 'up' position
-    let played;
-    if(this.state.pressed) played = down;
-    else played = up;
-    
-    return (
-      <g id={this.props.id}>
-        <polygon
-          className="App-white-note-gray"
-          points={down} />
-        <polygon id={this.props.id.slice(4, this.props.id.length)}
-          className="App-white-note"
-          onMouseDown={this.playNote}
-          onMouseUp={this.stopNote}
-          points={played} />
-      </g>
-    );
-  }
+  return (
+    <g>
+      <polygon
+        className={(props.color) ? "App-white-note-gray" : "App-black-note-gray"}
+        points={down} />
+      <polygon id={props.note}
+        className={(props.color) ? "App-white-note" : "App-black-note"}
+        onMouseOver={currentNote}
+        points={(props.playing) ? down : up} />
+    </g>
+  );
 };
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      noteName: "Played note will appear here"
-    };
+/**
+ * Main application functional component
+ * @param props 
+ */
+const App = props => {
+  const synth = new Tone.Synth();
+  synth.envelope.attack = 0.01;
+  synth.envelope.attackCurve = "linear";
+  synth.envelope.decay = 1.20;
+  synth.envelope.decayCurve = "exponential";
+  synth.envelope.release = 1.87;
+  synth.envelope.releaseCurve = "exponential";
+  // synth.oscillator.type = "sine";
+  synth.oscillator.partialCount = 7;
+  synth.toMaster();
 
-    this.changeNoteName = this.changeNoteName.bind(this);
-  }
+  const [currentNote, setCurrentNote] = useState("");
+  // const [playing, setPlaying] = useState(false);
+  const [C, setC] = useState(false);
+  const [D, setD] = useState(false);
+  const [E, setE] = useState(false);
+  const [F, setF] = useState(false);
+  const [G, setG] = useState(false);
+  const [A, setA] = useState(false);
+  const [B, setB] = useState(false);
+  const [Cs, setCs] = useState(false);
+  const [Ds, setDs] = useState(false);
+  const [Fs, setFs] = useState(false);
+  const [Gs, setGs] = useState(false);
+  const [As, setAs] = useState(false);
 
-  changeNoteName(note) {
-    this.setState({noteName: note});
-  }
+  const notes = {
+    "C4" : [C, setC],
+    "D4" : [D, setD],
+    "E4" : [E, setE],
+    "F4" : [F, setF],
+    "G4" : [G, setG],
+    "A4" : [A, setA],
+    "B4" : [B, setB],
+    "C#4" : [Cs, setCs],
+    "D#4" : [Ds, setDs],
+    "F#4" : [Fs, setFs],
+    "G#4" : [Gs, setGs],
+    "A#4" : [As, setAs]
+  };
 
-  render() {
-    return (
+  const kbNotes = {
+    "A" : "C4",
+    "S" : "D4",
+    "D" : "E4",
+    "F" : "F4",
+    "J" : "G4",
+    "K" : "A4",
+    "L" : "B4",
+    "W" : "C#4",
+    "E" : "D#4",
+    "U" : "F#4",
+    "I" : "G#4",
+    "O" : "A#4"
+  };
+
+  const changeNote = (note) => {
+    setCurrentNote(note);
+  };
+
+  const play = (e) => {
+    if (currentNote !== "") {
+      notes[currentNote][1](true);
+      synth.triggerAttackRelease(currentNote, "32n");
+    }
+  };
+
+  const stop = (e) => {
+    if (currentNote !== "") {
+      notes[currentNote][1](false);
+    }
+  };
+
+  return (
+    <>
       <div className="App">
         <header className="App-header">
-          <svg className="App-logo">
+          <svg className="App-logo" onMouseDown={play} onMouseUp={stop}>
             {/* White Notes */}
-            <Note id="noteC" noteName={this.changeNoteName} x={0} y={0} />
-            <Note id="noteD" noteName={this.changeNoteName} x={100} y={0} />
-            <Note id="noteE" noteName={this.changeNoteName} x={200} y={0} />
-            <Note id="noteF" noteName={this.changeNoteName} x={300} y={0} />
-            <Note id="noteG" noteName={this.changeNoteName} x={400} y={0} />
-            <Note id="noteA" noteName={this.changeNoteName} x={500} y={0} />
-            <Note id="noteB" noteName={this.changeNoteName} x={600} y={0} />
+            <Note color={1} note="C4" playing={C} setNote={changeNote} x={0} y={0} />
+            <Note color={1} note="D4" playing={D} setNote={changeNote} x={100} y={0} />
+            <Note color={1} note="E4" playing={E} setNote={changeNote} x={200} y={0} />
+            <Note color={1} note="F4" playing={F} setNote={changeNote} x={300} y={0} />
+            <Note color={1} note="G4" playing={G} setNote={changeNote} x={400} y={0} />
+            <Note color={1} note="A4" playing={A} setNote={changeNote} x={500} y={0} />
+            <Note color={1} note="B4" playing={B} setNote={changeNote} x={600} y={0} />
 
             {/* Black Notes */}
-            <BlackNote id="noteCSharpDFlat" noteName={this.changeNoteName} x={60} y={0} />
-            <BlackNote id="noteDSharpEFlat" noteName={this.changeNoteName} x={160} y={0} />
-            <BlackNote id="noteFSharpGFlat" noteName={this.changeNoteName} x={360} y={0} />
-            <BlackNote id="noteGSharpAFlat" noteName={this.changeNoteName} x={460} y={0} />
-            <BlackNote id="noteASharpBFlat" noteName={this.changeNoteName} x={560} y={0} />
+            <Note color={0} note="C#4" playing={Cs} setNote={changeNote} x={60} y={0} />
+            <Note color={0} note="D#4" playing={Ds} setNote={changeNote} x={160} y={0} />
+            <Note color={0} note="F#4" playing={Fs} setNote={changeNote} x={360} y={0} />
+            <Note color={0} note="G#4" playing={Gs} setNote={changeNote} x={460} y={0} />
+            <Note color={0} note="A#4" playing={As} setNote={changeNote} x={560} y={0} />
           </svg>
-          <p className="App-note-name">
-            {this.state.noteName}
-          </p>
         </header>
       </div>
-    );
-  }
-}
+    </>
+  );
+};
 
 export default App;

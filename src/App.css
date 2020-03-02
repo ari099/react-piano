@@ -5,10 +5,14 @@
 .App-logo {
   height: 320px;
   width: 700px;
-  /* border: 1px dotted white; */
 }
 
 .App-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
   background-color: black;
   min-height: 100vh;
   display: flex;
@@ -25,26 +29,24 @@
 
 .App-white-note {
   fill: white;
-  stroke: gray;
-  stroke-width: 1;
+  stroke: black;
   cursor: pointer;
 }
 
 .App-white-note-gray {
-  fill: gray;
-  stroke: gray;
-  stroke-width: 1;
+  fill: #333;
+  stroke: white;
 }
 
 .App-black-note {
   fill: black;
-  stroke-width: 1;
+  stroke: white;
   cursor: pointer;
 }
 
 .App-black-note-gray {
   fill: #333;
-  stroke-width: 1;
+  stroke: black;
 }
 
 .App-note-name {
